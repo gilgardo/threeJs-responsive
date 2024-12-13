@@ -6,7 +6,7 @@ function main() {
 
   if (container) {
     const world = new World(container);
-    world.animate();
+    world.start();
   }
 }
 

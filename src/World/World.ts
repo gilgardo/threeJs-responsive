@@ -1,11 +1,12 @@
 import { createCamera } from "./components/camera.ts";
-import { createCube } from "./components/cube.ts";
 import { createScene } from "./components/scene.ts";
 import { createLights } from "./components/lights.ts";
 import { createRenderer } from "./systems/renderer.ts";
 import { Resizer } from "./systems/Resizer.ts";
 import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { Loop } from "./systems/Loop.ts";
+import createControls from "./systems/controls.ts";
+import { createMeshGroup } from "./components/group.ts";
 
 // These variables are module-scoped: we cannot access them
 // from outside the module
@@ -21,15 +22,17 @@ class World {
     this.loop = new Loop(this.camera, this.scene, this.renderer);
     container.append(this.renderer.domElement);
 
-    const cube = createCube("basic", [2, 0, 0], { color: "purple" });
-    cube.name = "Cube1";
-    const cube2 = createCube("standard", [-2, 0, 0], { color: "yellow" });
-    cube2.name = "Cube2";
-
     const light = createLights();
+    const controls = createControls(
+      this.camera,
+      this.renderer.domElement,
+      light
+    );
 
-    this.scene.add(cube, cube2, light);
-    this.loop.addItem(cube, cube2);
+    const meshGroup = createMeshGroup();
+
+    this.scene.add(meshGroup, light);
+    this.loop.addItem(meshGroup, controls);
 
     new Resizer(container, this.camera, this.renderer);
   }

@@ -1,13 +1,5 @@
-import {
-  Clock,
-  Object3D,
-  PerspectiveCamera,
-  Scene,
-  WebGLRenderer,
-} from "three";
-interface Object3DWithTick extends Object3D {
-  tick: (delta: number, elapsed: number) => void;
-}
+import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { Tickable } from "../../types/Tickable";
 
 const clock = new Clock();
 
@@ -15,7 +7,7 @@ class Loop {
   camera: PerspectiveCamera;
   scene: Scene;
   renderer: WebGLRenderer;
-  updatables: Object3DWithTick[];
+  updatables: Tickable[];
   constructor(
     camera: PerspectiveCamera,
     scene: Scene,
@@ -27,7 +19,7 @@ class Loop {
     this.updatables = [];
   }
 
-  addItem = (...item: Object3DWithTick[]) => {
+  addItem = (...item: Tickable[]) => {
     this.updatables = this.updatables.concat(item);
   };
 
